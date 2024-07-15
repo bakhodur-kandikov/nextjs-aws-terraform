@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Sync static files with S3
+      - aws s3 sync /app/static s3://$NEXT_STATIC_BUCKET/_next/static --delete
+      - aws s3 sync /app/public s3://$NEXT_STATIC_BUCKET/public --delete
+
+  build:
+    commands:
+      - echo Invalidate CloudFront cache
+      - aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION --paths "/*"

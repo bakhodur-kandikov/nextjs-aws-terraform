@@ -1,0 +1,15 @@
+version: 0.0
+os: linux
+hooks:
+  ApplicationStop:
+    - location: ./scripts/app_stop.sh
+      runas: root
+      timeout: 3600
+  BeforeInstall:
+    - location: ./scripts/ecr-login.sh
+    - location: ./scripts/before_install.sh
+      runas: root
+  ApplicationStart:
+    - location: ./scripts/app_start.sh
+      runas: root
+      timeout: 3600
